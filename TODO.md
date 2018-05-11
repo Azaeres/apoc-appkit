@@ -25,6 +25,8 @@ We have a few options to consider:
 - recompose
 - code splitting
     https://github.com/gaearon/react-hot-loader#code-splitting
+
+    
 - hash router
     https://medium.freecodecamp.org/you-might-not-need-react-router-38673620f3d
     http://jamesknelson.com/push-state-vs-hash-based-routing-with-react-js/

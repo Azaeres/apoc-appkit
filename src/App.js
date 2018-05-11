@@ -2,6 +2,16 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import logo from 'logo.svg';
 import 'App.css';
+import Loadable from 'react-loadable';
+
+const LoadableBar = Loadable({
+  loader: () => import('Bar.js'),
+  loading() {
+    return <div>Loading...</div>
+  },
+
+});
+
 
 function App() {
   return (
@@ -13,6 +23,9 @@ function App() {
       <p className="App-intro">
         To get started, edit <code>src/App.js</code> and save to reload.
       </p>
+      <div>
+        <LoadableBar text="aposdjf"  />
+      </div>
     </div>
   );
 }
