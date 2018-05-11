@@ -2,19 +2,11 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import logo from 'logo.svg';
 import 'App.css';
-import Loadable from 'react-loadable';
+import { withState } from 'recompose';
 
-const LoadableBar = Loadable({
-  loader: async () => {
-    await delay(2000);
-    return await import('Bar.js');
-  },
-  loading() {
-    return <div>Loading...</div>
-  },
-});
+const enhance = withState('counter', 'setCounter', 0)
 
-function App() {
+const App = enhance(({ page, counter, setCounter }) => {
   return (
     <div className="App">
       <header className="App-header">
@@ -25,16 +17,15 @@ function App() {
         To get started, edit <code>src/App.js</code> and save to reload.
       </p>
       <div>
-        <LoadableBar text="fdfsdf"  />
+        Count: {counter}
+        <button onClick={() => setCounter(n => n + 1)}>Increment</button>
+        <button onClick={() => setCounter(n => n - 1)}>Decrement</button>
+      </div>
+      <div>
+        {page}
       </div>
     </div>
   );
-}
+});
 
 export default hot(module)(App);
-
-async function delay(ms) {
-  return new Promise((resolve) => {
-    return setTimeout(resolve, ms);
-  });
-}
