@@ -5,13 +5,16 @@ import 'App.css';
 import Loadable from 'react-loadable';
 
 const LoadableBar = Loadable({
-  loader: () => import('Bar.js'),
+  loader: () => {
+    return delay(2000)
+      .then(() => {
+        return import('Bar.js');
+      });
+  },
   loading() {
     return <div>Loading...</div>
   },
-
 });
-
 
 function App() {
   return (
@@ -24,10 +27,16 @@ function App() {
         To get started, edit <code>src/App.js</code> and save to reload.
       </p>
       <div>
-        <LoadableBar text="aposdjf"  />
+        <LoadableBar text="fdfsdf"  />
       </div>
     </div>
   );
 }
 
 export default hot(module)(App);
+
+function delay(ms) {
+  return new Promise((resolve) => {
+    return setTimeout(resolve, ms);
+  });
+}
