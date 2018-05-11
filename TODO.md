@@ -22,11 +22,19 @@ We have a few options to consider:
 ---
 ** Up next **
 
-- react-router w/ code splitting
 - recompose
+- code splitting
+    https://github.com/gaearon/react-hot-loader#code-splitting
+- hash router
+    https://medium.freecodecamp.org/you-might-not-need-react-router-38673620f3d
+    http://jamesknelson.com/push-state-vs-hash-based-routing-with-react-js/
 - react-copy-write
 - localforage
 - prettier?
 - idx
----
+
+- state container - coupling between recompose and react-copy-write?
+- promise state container
+- form state container
+
 ​
