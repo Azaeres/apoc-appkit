@@ -20,9 +20,3 @@ function handleNewHash() {
       ReactDOM.render(<App page={page} />, document.getElementById('root'));
     });
 }
-
-function delay(ms) {
-  return new Promise((resolve) => {
-    return setTimeout(resolve, ms);
-  });
-}

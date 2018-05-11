@@ -1,5 +1,6 @@
 import React from 'react';
 import Loadable from 'react-loadable';
+import queryString from 'query-string';
 
 const LoadablePage = Loadable({
   loader: async () => {
@@ -14,6 +15,9 @@ const LoadablePage = Loadable({
 const routes = [
   { path: '/one/:thing?', action: (context, params) => {
     console.log("> : context", context);
+    const { path } = context;
+    const { query } = queryString.parseUrl(path);
+    console.log("> : query", query);
     return (
       <h1>Page One {params.thing}</h1>
     );
