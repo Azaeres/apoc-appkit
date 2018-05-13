@@ -2,7 +2,9 @@
   "name": "diddit-app-kit",
   "version": "0.1.0",
   "dependencies": {
+    "idx": "^2.3.0",
     "immer": "^1.3.0",
+    "lodash.memoize": "^4.1.2",
     "qs": "^6.5.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
@@ -18,11 +20,15 @@
     "eject": "react-app-rewired eject"
   },
   "devDependencies": {
+    "babel-plugin-idx": "^2.2.0",
     "react-app-rewire-hot-loader": "^1.0.1",
     "react-app-rewired": "^1.5.2",
     "react-hot-loader": "^4.1.3"
   },
   "jest": {
-    "modulePaths": ["./src/app", "./src"]
+    "modulePaths": [
+      "./src/app",
+      "./src"
+    ]
   }
 }

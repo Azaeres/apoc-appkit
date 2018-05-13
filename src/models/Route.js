@@ -19,7 +19,11 @@ export function PageAction(Page) {
 
 export function LoadablePageAction(loader, loading) {
   return (context, params) => (
-    <LoadablePage {...PagePropsFromActionArgs(context, params)} loader={loader} loading={loading} />
+    <LoadablePage
+      {...PagePropsFromActionArgs(context, params)}
+      loader={loader}
+      loading={loading}
+    />
   );
 }
 
@@ -40,13 +44,13 @@ function LoadablePage({ loader, loading, ...restOfProps }) {
       await delay(2000);
       return await loader();
     },
-    loading,
+    loading
   });
   return <LoadablePage {...restOfProps} />;
 }
 
 async function delay(ms) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     return setTimeout(resolve, ms);
   });
 }

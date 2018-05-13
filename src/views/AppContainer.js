@@ -6,14 +6,8 @@ import { hot } from 'react-hot-loader';
 // App.js, routes.js, stores.js, etc.
 import App from 'app/views/pages/App';
 
-function AppContainer({ children, ...restOfProps }) {
-  return (
-    <div className="AppContainer">
-      <App {...restOfProps}>
-        {children}
-      </App>
-    </div>
-  );
-};
+function AppContainer(props) {
+  return <div className="AppContainer">{App && <App {...props} />}</div>;
+}
 
 export default hot(module)(AppContainer);
