@@ -1,27 +1,28 @@
+import guid from 'util/guid';
+
 const storeInstances = {};
 
-export default function Store(name, stateMachine) {
-  const { initialValue, reducer, orchestrators } = stateMachine;
+export default function Store(stateMachine) {
+  const { initialValue, reducer, dispatchers } = stateMachine;
+  const name = guid();
   storeInstances[name] = { value: initialValue, reducer, subscribers: [] };
-  return {
-    [name]: Interface(name, orchestrators)
-  };
+  return Interface(name, dispatchers);
 }
 
-export function StateMachine(initialValue, reducer, orchestrators) {
-  return { initialValue, reducer, orchestrators };
+export function StateMachine(initialValue, reducer, dispatchers) {
+  return { initialValue, reducer, dispatchers };
 }
 
-function Interface(name, orchestrators) {
+function Interface(name, dispatchers) {
   const dispatch = action => {
     const { value, reducer } = storeInstances[name];
     const nextValue = reducer(value, action);
     console.log('> : nextValue', nextValue);
     swap(name, nextValue);
   };
-  const keys = Object.keys(orchestrators);
-  const _orchestrators = keys.reduce((acc, methodName) => {
-    const customMethod = orchestrators[methodName];
+  const keys = Object.keys(dispatchers);
+  const _dispatchers = keys.reduce((acc, methodName) => {
+    const customMethod = dispatchers[methodName];
     return { ...acc, [methodName]: customMethod(dispatch) };
   }, {});
   return {
@@ -39,7 +40,7 @@ function Interface(name, orchestrators) {
         subscribers.splice(index, 1);
       }
     },
-    ..._orchestrators
+    ..._dispatchers
   };
 }
 
@@ -61,7 +62,7 @@ function notifySubscribers(name, previousValue, currentValue) {
 //   const { testStore } = stores;
 //   const value = testStore.getValue();
 //   console.log('> test: value', value);
-//   testStore.testOrchestrator('foo');
+//   testStore.dispatchTest('foo');
 //   const value2 = testStore.getValue();
 //   console.log('> : value2', value2);
 // })();
@@ -74,12 +75,12 @@ function notifySubscribers(name, previousValue, currentValue) {
 //   testStore.subscribe(listener);
 //   const value = testStore.getValue();
 //   console.log('# subscribed!: value', value);
-//   testStore.testOrchestrator('bar');
+//   testStore.dispatchTest('bar');
 //   const value2 = testStore.getValue();
 //   console.log('> : value2', value2);
 //   testStore.unsubscribe(listener);
 //   console.log('# unsubscribed!');
-//   testStore.testOrchestrator('silent');
+//   testStore.dispatchTest('silent');
 //   const value3 = testStore.getValue();
 //   console.log('> : value3', value3);
 // })();

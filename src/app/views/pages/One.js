@@ -1,12 +1,13 @@
 import React from 'react';
-import stores from 'stores';
 import withStore from 'views/shared/withStore';
 import { compose, withHandlers, pure } from 'recompose';
-import idx from 'idx';
 import testModel from 'app/models/testModel';
+import Store from 'models/Store';
 
-const { testStore } = stores;
-const { exampleSelector } = testModel;
+const { stateMachine, exampleSelector } = testModel;
+const testStore = Store(stateMachine);
+
+export { testStore };
 
 function One({ thing, onClick, value }) {
   return (
@@ -19,6 +20,9 @@ function One({ thing, onClick, value }) {
       <div>
         <a href="/#/two">Two</a>
       </div>
+      <div>
+        <a href="/#/load">Load</a>
+      </div>
     </div>
   );
 }
@@ -28,7 +32,7 @@ export default compose(
   withStore(testStore, exampleSelector),
   withHandlers({
     onClick: props => event => {
-      testStore.testOrchestrator('changed');
+      testStore.dispatchTest('changed');
     }
   })
 )(One);

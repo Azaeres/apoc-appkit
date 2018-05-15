@@ -4,7 +4,6 @@ import 'index.css';
 import AppContainer from 'views/AppContainer';
 import registerServiceWorker from 'registerServiceWorker';
 import UniversalRouter from 'universal-router';
-import 'stores';
 
 // TODO: This file location is the responsibility of the app
 // Create an `app/app.json` to keep a map of locations for:

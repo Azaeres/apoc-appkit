@@ -2,6 +2,7 @@ import Action from 'models/Action';
 import { StateMachine } from 'models/Store';
 import idx from 'idx';
 import memoize from 'lodash.memoize';
+import multiArgResolver from 'util/multiArgResolver';
 
 const ACTION_TYPES = {
   ADVANCE: 'ADVANCE'
@@ -20,13 +21,16 @@ const stateMachine = StateMachine(
     }
   },
   {
-    testOrchestrator: dispatch => test => {
+    dispatchTest: dispatch => test => {
       dispatch(Action(ACTION_TYPES.ADVANCE, test));
     }
   }
 );
 
-const exampleSelector = memoize(value => idx(value, _ => _[2]));
+const exampleSelector = memoize(
+  value => idx(value, _ => _[2]),
+  multiArgResolver
+);
 
 export default { stateMachine, exampleSelector };
 

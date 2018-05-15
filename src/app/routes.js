@@ -8,10 +8,10 @@ import Loading from 'views/shared/Loading';
 const routes = [
   Route('/one/:thing?', PageAction(One)),
   Route('/two', PageAction(Two)),
-  Route('/bar/:q?', LoadablePageAction(
-    () => import('views/pages/Bar'),
-    Loading
-  )),
+  Route(
+    '/load/:q?',
+    LoadablePageAction(() => import('views/pages/Bar'), Loading)
+  ),
   Route('(.*)', PageAction(NotFound404))
 ];
 

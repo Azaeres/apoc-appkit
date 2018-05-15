@@ -1,15 +1,18 @@
 import React from 'react';
-import stores from 'stores';
+import { testStore } from 'views/pages/One';
 import withStore from 'views/shared/withStore';
-
-const { testStore } = stores;
 
 function Two({ value }) {
   return (
     <div>
       <h1>Page Two</h1>
       <div>{value}</div>
-      <a href="/#/one">One</a>
+      <div>
+        <a href="/#/one">One</a>
+      </div>
+      <div>
+        <a href="/#/load">Load</a>
+      </div>
     </div>
   );
 }
