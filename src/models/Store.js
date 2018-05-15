@@ -15,14 +15,20 @@ export function StateMachine(initialValue, reducer, dispatchers) {
 
 function Interface(name, dispatchers) {
   const dispatch = action => {
-    setTimeout(() => {
-      const { value, reducer } = storeInstances[name];
-      // console.log('> calling reducer : value, action', value, action);
-      // console.log('> : reducer', reducer);
-      const nextValue = reducer(value, action);
-      // console.log('> dispatch : nextValue', nextValue);
-      swap(name, nextValue);
-    }, 0);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const { value, reducer } = storeInstances[name];
+        // console.log('> calling reducer : value, action', value, action);
+        // console.log('> : reducer', reducer);
+        try {
+          const nextValue = reducer(value, action);
+          swap(name, nextValue);
+          resolve(nextValue);
+        } catch (e) {
+          reject(e);
+        }
+      }, 0);
+    });
   };
   const keys = Object.keys(dispatchers);
   const _dispatchers = keys.reduce((acc, methodName) => {

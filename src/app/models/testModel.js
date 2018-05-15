@@ -21,7 +21,14 @@ const stateMachine = StateMachine(
   }),
   {
     dispatchTest: dispatch => test => {
-      dispatch(Action(ACTION_TYPES.ADVANCE, test));
+      dispatch(Action(ACTION_TYPES.ADVANCE, test)).then(
+        value => {
+          console.log('> success : value', value);
+        },
+        error => {
+          console.log('> fail: error', error);
+        }
+      );
     }
   }
 );

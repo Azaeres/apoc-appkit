@@ -2,8 +2,9 @@ import React from 'react';
 import logo from 'assets/logo.svg';
 import 'views/pages/App.css';
 import { withState } from 'recompose';
+import { hot } from 'react-hot-loader';
 
-const enhance = withState('counter', 'setCounter', 0)
+const enhance = withState('counter', 'setCounter', 0);
 
 const App = enhance(({ children, counter, setCounter }) => {
   return (
@@ -20,11 +21,9 @@ const App = enhance(({ children, counter, setCounter }) => {
         <button onClick={() => setCounter(n => n + 1)}>Increment</button>
         <button onClick={() => setCounter(n => n - 1)}>Decrement</button>
       </div>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
   );
 });
 
-export default App;
+export default hot(module)(App);

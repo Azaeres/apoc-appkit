@@ -10,7 +10,7 @@ const routes = [
   Route('/two', PageAction(Two)),
   Route(
     '/load/:q?',
-    LoadablePageAction(() => import('views/pages/Bar'), Loading)
+    LoadablePageAction(() => import('views/pages/Load'), Loading)
   ),
   Route('(.*)', PageAction(NotFound404))
 ];
