@@ -1,4 +1,4 @@
-import { compose, withHandlers, lifecycle, withState } from 'recompose';
+import { compose, withHandlers, lifecycle, withState, pure } from 'recompose';
 
 export default function withStore(
   store,
@@ -6,20 +6,21 @@ export default function withStore(
   valueName = 'value'
 ) {
   return compose(
-    withState(valueName, 'setValue', store.getValue()),
+    withState(valueName, 'setValue', selector(store.getValue())),
     withHandlers({
       listener: props => value => {
         props.setValue(selector(value));
       }
     }),
     lifecycle({
-      componentDidMount() {
+      componentWillMount() {
         this.props.setValue(selector(store.getValue()));
         store.subscribe(this.props.listener);
       },
       componentWillUnmount() {
         store.unsubscribe(this.props.listener);
       }
-    })
+    }),
+    pure
   );
 }

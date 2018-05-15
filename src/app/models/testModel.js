@@ -3,6 +3,7 @@ import { StateMachine } from 'models/Store';
 import idx from 'idx';
 import memoize from 'lodash.memoize';
 import multiArgResolver from 'util/multiArgResolver';
+import produce from 'immer';
 
 const ACTION_TYPES = {
   ADVANCE: 'ADVANCE'
@@ -10,16 +11,14 @@ const ACTION_TYPES = {
 
 const stateMachine = StateMachine(
   'initial',
-  (value, action) => {
-    console.log('> : value', value);
-    console.log('> : action', action);
+  produce((draft, action) => {
     switch (action.type) {
       case ACTION_TYPES.ADVANCE:
         return action.payload;
       default:
-        return value;
+        return draft;
     }
-  },
+  }),
   {
     dispatchTest: dispatch => test => {
       dispatch(Action(ACTION_TYPES.ADVANCE, test));

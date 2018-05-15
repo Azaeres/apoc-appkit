@@ -9,10 +9,11 @@ const testStore = Store(stateMachine);
 
 export { testStore };
 
-function One({ thing, onClick, value }) {
+function One({ onClick, value }) {
+  // console.log('> One render : value', value);
   return (
     <div>
-      <h1>Page One {thing}</h1>
+      <h1>Page One</h1>
       <div>{value}</div>
       <div>
         <button onClick={onClick}>Click</button>

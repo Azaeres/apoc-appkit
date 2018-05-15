@@ -15,10 +15,14 @@ export function StateMachine(initialValue, reducer, dispatchers) {
 
 function Interface(name, dispatchers) {
   const dispatch = action => {
-    const { value, reducer } = storeInstances[name];
-    const nextValue = reducer(value, action);
-    console.log('> : nextValue', nextValue);
-    swap(name, nextValue);
+    setTimeout(() => {
+      const { value, reducer } = storeInstances[name];
+      // console.log('> calling reducer : value, action', value, action);
+      // console.log('> : reducer', reducer);
+      const nextValue = reducer(value, action);
+      // console.log('> dispatch : nextValue', nextValue);
+      swap(name, nextValue);
+    }, 0);
   };
   const keys = Object.keys(dispatchers);
   const _dispatchers = keys.reduce((acc, methodName) => {
@@ -31,7 +35,8 @@ function Interface(name, dispatchers) {
       return storeInstances[name].value;
     },
     subscribe: listener => {
-      storeInstances[name].subscribers.push(listener);
+      const { subscribers } = storeInstances[name];
+      subscribers.push(listener);
     },
     unsubscribe: listener => {
       const { subscribers } = storeInstances[name];
