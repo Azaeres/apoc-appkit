@@ -41,7 +41,7 @@ function PagePropsFromActionArgs(context, params) {
 function LoadablePage({ loader, loading, ...restOfProps }) {
   const LoadablePage = Loadable({
     loader: async () => {
-      await delay(2000);
+      await delay(400);
       return await loader();
     },
     loading

@@ -1,17 +1,23 @@
 import React from 'react';
-import { testStore } from 'views/pages/One';
-import withStore from 'views/shared/withStore';
 import { hot } from 'react-hot-loader';
 import { compose, pure } from 'recompose';
+import Header from 'views/shared/Header';
+import Loading from 'views/shared/Loading';
+import Loadable from 'react-loadable';
+import delay from 'util/delay';
+
+const LoadableComponent = Loadable({
+  loader: () => {
+    return delay(() => import('views/shared/LoadPageContent'), 2000);
+  },
+  loading: Loading
+});
 
 function Load(props) {
-  console.log('> Load : props', props);
-  const { query: { thing }, value } = props;
   return (
     <div>
-      <h1>Loadable Page</h1>
-      <div>Thing: {thing}</div>
-      <div>Value: {value}</div>
+      <Header title="Loadable Page" />
+      <LoadableComponent {...props} />
       <div>
         <a href="/#/one">One</a>
       </div>
@@ -22,4 +28,4 @@ function Load(props) {
   );
 }
 
-export default compose(hot(module), withStore(testStore), pure)(Load);
+export default compose(hot(module), pure)(Load);

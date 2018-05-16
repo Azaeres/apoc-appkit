@@ -9,6 +9,7 @@ import {
 } from 'app/models/ObjectExample';
 import Store from 'models/Store';
 import { hot } from 'react-hot-loader';
+import Header from 'views/shared/Header';
 
 const { stateMachine, exampleSelector } = testModel;
 export const testStore = Store(stateMachine);
@@ -38,7 +39,7 @@ function One({
   console.log('> asdf');
   return (
     <div>
-      <h1>Page One</h1>
+      <Header title="Page One" />
       <div>
         {value} <button onClick={onClick}>Click</button>
       </div>
