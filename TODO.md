@@ -28,17 +28,21 @@ We have a few options to consider:
 * prettier
 * idx
 * memoize
+* promise state container
 
 ---
 
 ** Up next **
 
-* promise state container
 * form state container
 * data layer
   https://slides.com/koistya/universal-router#/10
 
+* offline mode
+
 * localforage
+* secret management?
+* auth?
   ​
 * electron
   https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
