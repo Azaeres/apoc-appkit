@@ -42,3 +42,6 @@ We have a few options to consider:
 * electron
   https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
   https://gist.github.com/matthewjberger/6f42452cb1a2253667942d333ff53404
+* "why is this project cool? what problems does it solve?"" docs
+* "getting started" documentation
+* "recommended patterns" documentation
