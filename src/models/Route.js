@@ -2,6 +2,9 @@ import React from 'react';
 import qs from 'qs';
 import Loadable from 'react-loadable';
 import delay from 'util/delay';
+import { PromiseStateMachine } from 'models/Promise';
+import Store from 'models/Store';
+import withStore from 'views/shared/withStore';
 
 // Route options: https://github.com/kriasoft/universal-router/blob/master/docs/api.md
 
@@ -13,9 +16,20 @@ export default function Route(path, action) {
 }
 
 export function PageAction(Page) {
-  return (context, params) => (
-    <Page {...PagePropsFromActionArgs(context, params)} />
-  );
+  return async (context, params) => {
+    const props = PagePropsFromActionArgs(context, params);
+    const { prefetch } = Page;
+    if (prefetch === undefined) {
+      return <Page {...props} />;
+    } else {
+      const promiseStore = Store(PromiseStateMachine());
+      await promiseStore.addPromise(prefetch(props));
+      const Component = withStore(promiseStore)(props => {
+        return <Page {...props} />;
+      });
+      return <Component {...props} />;
+    }
+  };
 }
 
 export function LoadablePageAction(loader, loading) {
