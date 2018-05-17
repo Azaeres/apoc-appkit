@@ -37,8 +37,8 @@ export function PromiseStateMachine(defaultValue) {
       }
     }),
     {
-      addPromise: store => async (promise, defaultValue) => {
-        const { dispatch, fulfillSuccess, fulfillError } = store;
+      addPromise: ({ dispatch }) => async (promise, defaultValue) => {
+        const { fulfillSuccess, fulfillError } = PrivateMethods(dispatch);
         console.log('> addPromise() ');
         promise.catch(error => {});
         return dispatch(
@@ -46,17 +46,22 @@ export function PromiseStateMachine(defaultValue) {
         ).then(value => {
           return promise.then(fulfillSuccess, fulfillError).catch(fulfillError);
         });
-      },
-      fulfillSuccess: ({ dispatch }) => value => {
-        console.log('> fulfillSuccess: ');
-        return dispatch(Action(ACTION_TYPES.FULFILL_SUCCESS, value));
-      },
-      fulfillError: ({ dispatch }) => error => {
-        console.log('> fulfillError');
-        return dispatch(Action(ACTION_TYPES.FULFILL_ERROR, error));
       }
     }
   );
+}
+
+function PrivateMethods(dispatch) {
+  return {
+    fulfillSuccess: value => {
+      console.log('> fulfillSuccess: ');
+      return dispatch(Action(ACTION_TYPES.FULFILL_SUCCESS, value));
+    },
+    fulfillError: error => {
+      console.log('> fulfillError');
+      return dispatch(Action(ACTION_TYPES.FULFILL_ERROR, error));
+    }
+  };
 }
 
 const STATUSES = {
