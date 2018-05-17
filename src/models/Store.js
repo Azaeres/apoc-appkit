@@ -23,7 +23,7 @@ function Interface(name, dispatchers) {
         try {
           const nextValue = reducer(value, action);
           swap(name, nextValue);
-          resolve(nextValue);
+          resolve(nextValue, value);
         } catch (e) {
           reject(e);
         }
@@ -32,7 +32,7 @@ function Interface(name, dispatchers) {
   };
   const _interface = {
     dispatch,
-    getValue: () => {
+    get value() {
       return storeInstances[name].value;
     },
     subscribe: listener => {
@@ -72,10 +72,10 @@ function notifySubscribers(name, previousValue, currentValue) {
 
 // (function test() {
 //   const { testStore } = stores;
-//   const value = testStore.getValue();
+//   const value = testStore.value;
 //   console.log('> test: value', value);
 //   testStore.dispatchTest('foo');
-//   const value2 = testStore.getValue();
+//   const value2 = testStore.value;
 //   console.log('> : value2', value2);
 // })();
 //
@@ -85,14 +85,14 @@ function notifySubscribers(name, previousValue, currentValue) {
 //     console.log('> subscriber was notified of: value', value);
 //   };
 //   testStore.subscribe(listener);
-//   const value = testStore.getValue();
+//   const value = testStore.value;
 //   console.log('# subscribed!: value', value);
 //   testStore.dispatchTest('bar');
-//   const value2 = testStore.getValue();
+//   const value2 = testStore.value;
 //   console.log('> : value2', value2);
 //   testStore.unsubscribe(listener);
 //   console.log('# unsubscribed!');
 //   testStore.dispatchTest('silent');
-//   const value3 = testStore.getValue();
+//   const value3 = testStore.value;
 //   console.log('> : value3', value3);
 // })();

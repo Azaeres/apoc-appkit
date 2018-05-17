@@ -6,7 +6,7 @@ export default function withStore(
   valueName = 'value'
 ) {
   return compose(
-    withState(valueName, 'setValue', selector(store.getValue())),
+    withState(valueName, 'setValue', selector(store.value)),
     withHandlers({
       listener: props => value => {
         props.setValue(selector(value));
@@ -14,7 +14,7 @@ export default function withStore(
     }),
     lifecycle({
       componentWillMount() {
-        this.props.setValue(selector(store.getValue()));
+        this.props.setValue(selector(store.value));
         store.subscribe(this.props.listener);
       },
       componentWillUnmount() {
