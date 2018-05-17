@@ -35,8 +35,6 @@ function One({
   toggle,
   incrementCounter
 }) {
-  console.log('> One render : objectStore', objectStore);
-  console.log('> asdf');
   return (
     <div>
       <Header title="Page One" />
@@ -56,7 +54,7 @@ function One({
         <a href="/#/two">Two</a>
       </div>
       <div>
-        <a href="/#/load/foo">Load</a>
+        <a href="/#/load/foo">Prefetch Load</a>
       </div>
     </div>
   );

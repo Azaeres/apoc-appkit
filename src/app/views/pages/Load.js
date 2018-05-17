@@ -17,9 +17,6 @@ const LoadableComponent = Loadable({
 });
 
 function Load(props) {
-  const { value } = props;
-  const result = resultFromPromiseState(value);
-  const foo = idx(result, _ => _.foo);
   return (
     <div>
       <Header title="Loadable Page" />
