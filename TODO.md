@@ -34,7 +34,7 @@ We have a few options to consider:
 
 ---
 
-** Up next **
+**Up next**
 
 * form state container
 * offline mode
