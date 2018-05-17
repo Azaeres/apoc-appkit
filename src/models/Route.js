@@ -1,6 +1,7 @@
 import React from 'react';
 import qs from 'qs';
 import Loadable from 'react-loadable';
+import delay from 'util/delay';
 
 // Route options: https://github.com/kriasoft/universal-router/blob/master/docs/api.md
 
@@ -27,7 +28,7 @@ export function LoadablePageAction(loader, loading) {
   );
 }
 
-function PagePropsFromActionArgs(context, params) {
+export function PagePropsFromActionArgs(context, params) {
   const { path } = context;
   const [, queryStr] = path.split('?');
   const query = qs.parse(queryStr);
@@ -47,10 +48,4 @@ function LoadablePage({ loader, loading, ...restOfProps }) {
     loading
   });
   return <LoadablePage {...restOfProps} />;
-}
-
-async function delay(ms) {
-  return new Promise(resolve => {
-    return setTimeout(resolve, ms);
-  });
 }

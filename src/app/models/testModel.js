@@ -20,15 +20,13 @@ const stateMachine = StateMachine(
     }
   }),
   {
-    dispatchTest: dispatch => test => {
-      dispatch(Action(ACTION_TYPES.ADVANCE, test)).then(
-        value => {
-          console.log('> success : value', value);
-        },
-        error => {
-          console.log('> fail: error', error);
-        }
-      );
+    dispatchTest: ({ dispatch }) => async test => {
+      try {
+        const value = await dispatch(Action(ACTION_TYPES.ADVANCE, test));
+        console.log('> success : value', value);
+      } catch (error) {
+        console.log('> fail: error', error);
+      }
     }
   }
 );

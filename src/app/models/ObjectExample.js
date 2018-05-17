@@ -41,10 +41,10 @@ export const stateMachine = StateMachine(
     }
   }),
   {
-    toggle: dispatch => test => {
+    toggle: ({ dispatch }) => () => {
       dispatch(Action(ACTION_TYPES.TOGGLE));
     },
-    incrementCounter: dispatch => test => {
+    incrementCounter: ({ dispatch }) => () => {
       // 3. dispatcher -> reducer
       dispatch(Action(ACTION_TYPES.INCREMENT_COUNTER));
     }

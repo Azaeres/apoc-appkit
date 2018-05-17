@@ -56,7 +56,7 @@ function One({
         <a href="/#/two">Two</a>
       </div>
       <div>
-        <a href="/#/load">Load</a>
+        <a href="/#/load/foo">Load</a>
       </div>
     </div>
   );

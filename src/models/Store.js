@@ -30,12 +30,7 @@ function Interface(name, dispatchers) {
       }, 0);
     });
   };
-  const keys = Object.keys(dispatchers);
-  const _dispatchers = keys.reduce((acc, methodName) => {
-    const customMethod = dispatchers[methodName];
-    return { ...acc, [methodName]: customMethod(dispatch) };
-  }, {});
-  return {
+  const _interface = {
     dispatch,
     getValue: () => {
       return storeInstances[name].value;
@@ -50,9 +45,15 @@ function Interface(name, dispatchers) {
       if (index !== -1) {
         subscribers.splice(index, 1);
       }
-    },
-    ..._dispatchers
+    }
   };
+  const keys = Object.keys(dispatchers);
+  const _dispatchers = keys.reduce((acc, methodName) => {
+    const customMethod = dispatchers[methodName];
+    return { ...acc, [methodName]: customMethod(_interface) };
+  }, {});
+  Object.assign(_interface, _dispatchers);
+  return _interface;
 }
 
 function swap(name, value) {
