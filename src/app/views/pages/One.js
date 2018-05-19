@@ -7,46 +7,21 @@ import {
   toggleSelector,
   counterSelector
 } from 'app/models/ObjectExample';
-import Store, { Accessors } from 'models/Store';
+import Store from 'models/Store';
 import { hot } from 'react-hot-loader';
 import Header from 'views/shared/Header';
+import localStorageDriver from 'models/localStorageDriver';
 
 const { stateMachine, exampleSelector } = testModel;
 export const testStore = Store(stateMachine);
 
 const storeId = '2774306e-d494-cfb0-0d2b-df98d5650d79';
-
-// const cache = {
-//   [storeId]: ObjectExample(10, false)
-// };
-const initialize = async storeId => {
-  const got = JSON.parse(localStorage.getItem(storeId));
-  // console.log('> : got', got);
-  const initial = got === null ? undefined : got;
-  // console.log('> : initial', initial);
-  return Promise.resolve(initial);
-};
-const getter = async storeId => {
-  // console.log('> get : ', storeId);
-  // const value = cache[storeId];
-  const value = localStorage.getItem(storeId);
-  return Promise.resolve(JSON.parse(value));
-};
-const setter = async (storeId, value) => {
-  // console.log('> set : storeId', storeId);
-  // console.log('> : value', value);
-  // cache[storeId] = value;
-  localStorage.setItem(storeId, JSON.stringify(value));
-  return Promise.resolve();
-};
-
 export const objectStore = Store(
   objectStateMachine,
-  Accessors(initialize, getter, setter),
+  localStorageDriver,
   storeId
 );
-// console.log('> : cache', cache);
-// console.log('> : JSON.stringify(cache)', JSON.stringify(cache));
+
 /*
 
 The store pipeline:

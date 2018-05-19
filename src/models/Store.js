@@ -25,7 +25,7 @@ const defaultSetter = (storeId, value) => {
   return Promise.resolve();
 };
 
-export default function Store(stateMachine, accessors = Accessors(), storeId) {
+export default function Store(stateMachine, accessors = Driver(), storeId) {
   const { initialValue, reducer, dispatchers } = stateMachine;
   const { getter, setter, initialize } = accessors;
   storeId = storeId === undefined ? guid() : storeId;
@@ -47,7 +47,7 @@ export default function Store(stateMachine, accessors = Accessors(), storeId) {
   return Interface(storeId, dispatchers, accessors);
 }
 
-export function Accessors(
+export function Driver(
   initialize = defaultInitialize,
   getter = defaultGetter,
   setter = defaultSetter
