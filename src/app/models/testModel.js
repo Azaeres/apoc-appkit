@@ -32,7 +32,6 @@ const stateMachine = StateMachine(
 );
 
 const exampleSelector = memoize(value => {
-  // console.log('> exampleSelector: value', value);
   return idx(value, _ => _[2]);
 }, multiArgResolver);
 

@@ -13,13 +13,12 @@ import Header from 'views/shared/Header';
 import localStorageDriver from 'models/localStorageDriver';
 
 const { stateMachine, exampleSelector } = testModel;
-export const testStore = Store(stateMachine);
 
-const storeId = '2774306e-d494-cfb0-0d2b-df98d5650d79';
+export const testStore = Store(stateMachine, undefined, 'testStore');
 export const objectStore = Store(
   objectStateMachine,
   localStorageDriver,
-  storeId
+  'objectStore'
 );
 
 /*

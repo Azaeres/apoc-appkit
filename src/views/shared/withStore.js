@@ -15,6 +15,9 @@ export default function withStore(
     lifecycle({
       componentWillMount() {
         this.props.setValue(selector(store.value));
+        store.getValue().then(value => {
+          this.props.setValue(selector(value));
+        });
         store.subscribe(this.props.listener);
       },
       componentWillUnmount() {
