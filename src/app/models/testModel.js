@@ -22,19 +22,19 @@ const stateMachine = StateMachine(
   {
     dispatchTest: ({ dispatch }) => async test => {
       try {
-        const value = await dispatch(Action(ACTION_TYPES.ADVANCE, test));
-        console.log('> success : value', value);
+        await dispatch(Action(ACTION_TYPES.ADVANCE, test));
+        // console.log('> success : value', value);
       } catch (error) {
-        console.log('> fail: error', error);
+        console.error('> fail: error', error);
       }
     }
   }
 );
 
-const exampleSelector = memoize(
-  value => idx(value, _ => _[2]),
-  multiArgResolver
-);
+const exampleSelector = memoize(value => {
+  // console.log('> exampleSelector: value', value);
+  return idx(value, _ => _[2]);
+}, multiArgResolver);
 
 export default { stateMachine, exampleSelector };
 

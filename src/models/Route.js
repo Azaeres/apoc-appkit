@@ -22,7 +22,11 @@ export function PageAction(Page) {
     if (prefetch === undefined) {
       return <Page {...props} />;
     } else {
-      const promiseStore = Store(PromiseStateMachine());
+      const promiseStore = Store(
+        PromiseStateMachine(),
+        undefined,
+        `prefetch:"${context.path}"`
+      );
       await promiseStore.addPromise(prefetch(props));
       const Component = withStore(promiseStore)(props => {
         return <Page {...props} />;

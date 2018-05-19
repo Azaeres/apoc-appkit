@@ -15,7 +15,8 @@ export function PromiseStateMachine(defaultValue) {
   return StateMachine(
     PromiseStateEmpty(defaultValue),
     produce((draft, action) => {
-      console.log('> reduce: action', action);
+      // console.log('> reduce: action', action);
+      // console.log('> Promise state machine reducer : draft', draft);
       switch (action.type) {
         case ACTION_TYPES.ADD_PROMISE: {
           const { defaultValue } = action.payload;
@@ -39,7 +40,7 @@ export function PromiseStateMachine(defaultValue) {
     {
       addPromise: ({ dispatch }) => async (promise, defaultValue) => {
         const { fulfillSuccess, fulfillError } = PrivateMethods(dispatch);
-        console.log('> addPromise() ');
+        // console.log('> addPromise() ');
         promise.catch(error => {});
         return dispatch(
           Action(ACTION_TYPES.ADD_PROMISE, { defaultValue })
@@ -54,11 +55,11 @@ export function PromiseStateMachine(defaultValue) {
 function PrivateMethods(dispatch) {
   return {
     fulfillSuccess: value => {
-      console.log('> fulfillSuccess: ');
+      // console.log('> fulfillSuccess: ');
       return dispatch(Action(ACTION_TYPES.FULFILL_SUCCESS, value));
     },
     fulfillError: error => {
-      console.log('> fulfillError');
+      // console.log('> fulfillError');
       return dispatch(Action(ACTION_TYPES.FULFILL_ERROR, error));
     }
   };

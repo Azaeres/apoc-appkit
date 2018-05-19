@@ -10,19 +10,19 @@ const ACTION_TYPES = {
   INCREMENT_COUNTER: 'INCREMENT_COUNTER'
 };
 
-export default function ObjectExample(foo, bar, baz) {
+export default function ObjectExample(counter = 0, toggle = false) {
   return {
-    foo,
-    counter: 0,
+    foo: 'foo',
+    counter,
     thing: {
-      bar,
-      toggle: false,
-      arr: [baz]
+      bar: 'bar',
+      toggle,
+      arr: ['baz']
     }
   };
 }
 
-const initialValue = ObjectExample('foo', 'bar', 'baz');
+const initialValue = ObjectExample();
 Object.freeze(initialValue);
 
 export const stateMachine = StateMachine(
