@@ -53,7 +53,7 @@ function Data({ value }) {
 export default compose(
   hot(module),
   setStatic('prefetch', async (...args) => {
-    await delay(3000);
+    await delay(1500);
     return { foo: 'bar' };
   }),
   pure

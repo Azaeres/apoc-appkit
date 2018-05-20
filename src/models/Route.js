@@ -27,7 +27,7 @@ export function PageAction(Page) {
         undefined,
         `prefetch:"${context.path}"`
       );
-      await promiseStore.addPromise(prefetch(props));
+      promiseStore.addPromise(prefetch(props));
       const Component = withStore(promiseStore)(props => {
         return <Page {...props} />;
       });

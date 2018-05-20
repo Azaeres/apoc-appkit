@@ -36,7 +36,7 @@ The store pipeline:
 
 function One({
   onClick,
-  value,
+  advance,
   objectStore: { toggleValue, counterValue },
   secondInstanceOfCounter,
   toggle,
@@ -46,7 +46,7 @@ function One({
     <div>
       <Header title="Page One" />
       <div>
-        {value} <button onClick={onClick}>Click</button>
+        {advance} <button onClick={onClick}>Click</button>
       </div>
       <div>
         {toggleValue.toString()} <button onClick={toggle}>Toggle</button>
@@ -70,7 +70,7 @@ function One({
 
 export default compose(
   hot(module),
-  withStore(testStore, exampleSelector),
+  withStore(testStore, exampleSelector, 'advance'),
   withStore(
     objectStore,
     value => {
