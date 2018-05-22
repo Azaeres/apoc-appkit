@@ -41,6 +41,7 @@ We have a few options to consider:
 
 * setup dedicated host for prod, test offline mode
 * test: does this work within an iframe?
+* create new home app; test custom app project within app-kit clone; git submodules? work out copy/solve/share workflow
 * electron
   https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
   https://gist.github.com/matthewjberger/6f42452cb1a2253667942d333ff53404
