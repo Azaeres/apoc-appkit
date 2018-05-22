@@ -11,6 +11,7 @@ import Store from 'models/Store';
 import { hot } from 'react-hot-loader';
 import Header from 'views/shared/Header';
 import localStorageDriver from 'models/localStorageDriver';
+import Navigation from 'views/shared/Navigation';
 
 const { stateMachine, exampleSelector } = testModel;
 
@@ -35,6 +36,7 @@ The store pipeline:
  */
 
 function One({
+  context,
   onClick,
   advance,
   objectStore: { toggleValue, counterValue },
@@ -45,6 +47,7 @@ function One({
   return (
     <div>
       <Header title="Page One" />
+      <Navigation routerContext={context} />
       <div>
         {advance} <button onClick={onClick}>Click</button>
       </div>
@@ -57,12 +60,6 @@ function One({
         {/* 1. view control -> view event */}
         <button onClick={incrementCounter}>Bump</button>
         {secondInstanceOfCounter}
-      </div>
-      <div>
-        <a href="/#/two">Two</a>
-      </div>
-      <div>
-        <a href="/#/load/foo">Prefetch Load</a>
       </div>
     </div>
   );

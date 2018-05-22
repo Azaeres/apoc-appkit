@@ -4,18 +4,14 @@ import withStore from 'views/shared/withStore';
 import { hot } from 'react-hot-loader';
 import { compose, pure } from 'recompose';
 import Header from 'views/shared/Header';
+import Navigation from 'views/shared/Navigation';
 
-function Two({ value }) {
+function Two({ value, context }) {
   return (
     <div>
       <Header title="Page Two" />
+      <Navigation routerContext={context} />
       <div>{value}</div>
-      <div>
-        <a href="/#/one">One</a>
-      </div>
-      <div>
-        <a href="/#/load">Load</a>
-      </div>
     </div>
   );
 }
