@@ -37,20 +37,27 @@ We have a few options to consider:
 
 **Up next**
 
+* localforage driver
+
+* setup dedicated host for prod, test offline mode
+* test: does this work within an iframe?
+* electron
+  https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
+  https://gist.github.com/matthewjberger/6f42452cb1a2253667942d333ff53404
+
+* Terminal: https://atom.io/packages/atom-xterm
+* Web browser: https://github.com/rhysd/react-embedded-browser
+* File manager: https://github.com/OpusCapita/filemanager
+* Media player: https://cookpete.com/react-player/
+
 * add **SERVER** and **CLIENT** global vars
 * investigate ways of running isomorphic codebase for node server
-* localforage driver
 * Build for node.js server
   * express
   * socket.io
   * redis store driver
   * ProxyStore_client
 * minimal form state machine, just a text field
-* setup dedicated host for prod, test offline mode
-* test: does this work within an iframe?
-* electron
-  https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
-  https://gist.github.com/matthewjberger/6f42452cb1a2253667942d333ff53404
 * "why is this project cool? what problems does it solve?"" docs
 * "getting started" documentation
 * "recommended patterns" documentation
