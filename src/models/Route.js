@@ -5,6 +5,7 @@ import delay from 'util/delay';
 import { PromiseStateMachine } from 'models/Promise';
 import Store from 'models/Store';
 import withStore from 'views/shared/withStore';
+import memoize from 'lodash.memoize';
 
 // Route options: https://github.com/kriasoft/universal-router/blob/master/docs/api.md
 
@@ -15,6 +16,11 @@ export default function Route(path, action) {
   };
 }
 
+const PromiseStore = memoize((Page, storeId) => {
+  // console.log('> PromiseStore : storeId', storeId);
+  return Store(PromiseStateMachine(), undefined, storeId);
+});
+
 export function PageAction(Page) {
   return async (context, params) => {
     const props = PagePropsFromActionArgs(context, params);
@@ -22,15 +28,16 @@ export function PageAction(Page) {
     if (prefetch === undefined) {
       return <Page {...props} />;
     } else {
-      const promiseStore = Store(
-        PromiseStateMachine(),
-        undefined,
-        `prefetch:"${context.path}"`
-      );
+      // console.log('> PageAction: context', context);
+      // console.log('> params: ');
+      const promiseStore = PromiseStore(Page, `prefetch:"${context.path}"`);
+      // console.log('>############# adding promise : ', promiseStore.value);
       promiseStore.addPromise(prefetch(props));
-      const Component = withStore(promiseStore)(props => {
-        return <Page {...props} />;
-      });
+      const Component = withStore(promiseStore, undefined, 'prefetch')(
+        props => {
+          return <Page {...props} />;
+        }
+      );
       return <Component {...props} />;
     }
   };

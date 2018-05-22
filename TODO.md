@@ -31,14 +31,23 @@ We have a few options to consider:
 * promise state container
 * data layer
   https://slides.com/koistya/universal-router#/10
+* webpack bundle analyzer
 
 ---
 
 **Up next**
 
-* form state container
-* offline mode
-* localforage
+* add **SERVER** and **CLIENT** global vars
+* investigate ways of running isomorphic codebase for node server
+* localforage driver
+* Build for node.js server
+  * express
+  * socket.io
+  * redis store driver
+  * ProxyStore_client
+* minimal form state machine, just a text field
+* setup dedicated host for prod, test offline mode
+* test: does this work within an iframe?
 * electron
   https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
   https://gist.github.com/matthewjberger/6f42452cb1a2253667942d333ff53404

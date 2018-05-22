@@ -189,7 +189,7 @@ async function swap(storeId, nextValue, accessors) {
 }
 
 function notifySubscribers(storeId, previousValue, currentValue) {
-  // console.log('> notifySubscribers: currentValue', currentValue);
+  // console.log('> notifySubscribers: currentValue', currentValue, storeId);
   // console.log('> : previousValue', previousValue);
   const { subscribers } = storeInstances[storeId];
   subscribers.forEach((subscriber, i) => {

@@ -19,16 +19,21 @@ export function PromiseStateMachine(defaultValue) {
       // console.log('> Promise state machine reducer : draft', draft);
       switch (action.type) {
         case ACTION_TYPES.ADD_PROMISE: {
+          // console.log(' reducer received > ADD_PROMISE : action', action);
+          // console.log('> before: draft', JSON.stringify(draft));
           const { defaultValue } = action.payload;
           Object.assign(draft, PromiseStatePending(defaultValue));
+          // console.log('> after: draft', JSON.stringify(draft));
           break;
         }
         case ACTION_TYPES.FULFILL_SUCCESS: {
+          // console.log('> reducer rcvd FULFILL_SUCCESS');
           const value = action.payload;
           Object.assign(draft, PromiseStateSuccess(value));
           break;
         }
         case ACTION_TYPES.FULFILL_ERROR: {
+          // console.log('> reducer rcvd FULFILL_ERROR');
           const value = action.payload;
           Object.assign(draft, PromiseStateFailure(value));
           break;

@@ -5,8 +5,8 @@ import Header from 'views/shared/Header';
 import Loading from 'views/shared/Loading';
 import Loadable from 'react-loadable';
 import delay from 'util/delay';
-import { resultFromPromiseState, isPending, isFailure } from 'models/Promise';
 import idx from 'idx';
+import Loader from 'views/shared/Loader';
 
 const LoadableComponent = Loadable({
   loader: async () => {
@@ -21,7 +21,20 @@ function Load(props) {
     <div>
       <Header title="Loadable Page" />
       <LoadableComponent {...props} />
-      <Data {...props} />
+      <Loader
+        value={props.prefetch}
+        loading={() => <div>Loading...</div>}
+        error={error => <div>Error!</div>}
+      >
+        {value => {
+          const foo = idx(value, _ => _.foo);
+          return (
+            <div>
+              Prefetched data: <span>{foo}</span>
+            </div>
+          );
+        }}
+      </Loader>
       <div>
         <a href="/#/one">One</a>
       </div>
@@ -30,24 +43,6 @@ function Load(props) {
       </div>
     </div>
   );
-}
-
-function Data({ value }) {
-  if (value === undefined) {
-    return null;
-  } else if (isPending(value)) {
-    return <div>Loading...</div>;
-  } else if (isFailure(value)) {
-    return <div>Error!</div>;
-  } else {
-    const result = resultFromPromiseState(value);
-    const foo = idx(result, _ => _.foo);
-    return (
-      <div>
-        Prefetched data: <span>{foo}</span>
-      </div>
-    );
-  }
 }
 
 export default compose(
