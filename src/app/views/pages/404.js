@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from 'assets/logo.svg';
+import Navigation from 'views/shared/Navigation';
 
-export default function NotFound404() {
+export default function NotFound404({ context }) {
   return (
     <div>
       <header className="App-header">
@@ -17,15 +18,7 @@ export default function NotFound404() {
         <button onClick={() => setCounter(n => n + 1)}>Increment</button>
         <button onClick={() => setCounter(n => n - 1)}>Decrement</button>
       </div> */}
-      <div>
-        <a href="/#/one">One</a>
-      </div>
-      <div>
-        <a href="/#/two">Two</a>
-      </div>
-      <div>
-        <a href="/#/load">Load</a>
-      </div>
+      <Navigation routerContext={context} />
     </div>
   );
 }
