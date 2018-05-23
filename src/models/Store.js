@@ -13,7 +13,11 @@ export default function Store(
   // We prefer the cache until the initialize comes back.
   bestGuessCache[storeId] = { value: initialValue, prefer: 1 };
   storeInstances[storeId] = { reducer, subscribers: [] };
-  initialize(storeId, initialValue).then(async (value = initialValue) => {
+  // PROXY: On init we send a request to get the value of the upstream store.
+  // Without waiting we call the persistence driver's initialize.
+  // When we get the response from the upstream store, we prefer
+  // that to the other storage mechanisms.
+  initialize(storeId, initialValue).then(async value => {
     Object.assign(bestGuessCache[storeId], { value });
     return await swap(storeId, value, persistenceDriver);
   });
@@ -65,8 +69,16 @@ function Interface(storeId, dispatchers, persistenceDriver) {
     // console.log('#### Simulating network delay...');
     // await delay(3000);
     // This is the actual determination of the next value.
+
+    // PROXY: On dispatch we send a dispatch request to the upstream
+    // store. The following reduce should be *also* done by the upstream store.
+    // When proxying we'll 1. reduce for the cache prediction, 2. reduce for the
+    // local persistent store, and 3. reduce for the upstream store.
+    // These are better guesses, respectively. Each time we get a better one, we'll
+    // upgrade to it. Sync all three local storage containers to this better guess.
+    // Notify subscribers when we swap in a better guess.
+    // I think we can wrap store interface methods such as `dispatch`.
     const nextValue = reducer(previousValue, action);
-    // Local async, should be relatively quick
     await swap(storeId, nextValue, persistenceDriver);
     return { nextValue, previousValue };
   };
