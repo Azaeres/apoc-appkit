@@ -10,7 +10,8 @@ import {
 import Store from 'models/Store';
 import { hot } from 'react-hot-loader';
 import Header from 'views/shared/Header';
-import localStorageDriver from 'models/localStorageDriver';
+// import localStorageDriver from 'models/localStorageDriver';
+import localforageDriver from 'models/localforageDriver';
 import Navigation from 'views/shared/Navigation';
 
 const { stateMachine, exampleSelector } = testModel;
@@ -18,7 +19,7 @@ const { stateMachine, exampleSelector } = testModel;
 export const testStore = Store(stateMachine, undefined, 'testStore');
 export const objectStore = Store(
   objectStateMachine,
-  localStorageDriver,
+  localforageDriver,
   'objectStore'
 );
 
@@ -44,6 +45,7 @@ function One({
   toggle,
   incrementCounter
 }) {
+  // console.log('> One : toggleValue', toggleValue);
   return (
     <div>
       <Header title="Page One" />
