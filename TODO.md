@@ -32,22 +32,25 @@ We have a few options to consider:
 * data layer
   https://slides.com/koistya/universal-router#/10
 * webpack bundle analyzer
+* localforage driver; does this give the persistent store compatibility with Brave browser? YES
 
 ---
 
 **Up next**
 
-* localforage driver
+* proxy store, update store to support protocols
+* localStoreProtocol and httpStoreProtocol
 
 * setup dedicated host for prod, test offline mode
 * test: does this work within an iframe?
 * create new home app; test custom app project within app-kit clone; git submodules? work out copy/solve/share workflow
-* electron
+* home within electron (for desktop)
   https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
   https://gist.github.com/matthewjberger/6f42452cb1a2253667942d333ff53404
+* home within iOS/Android web app container (for mobile)
 
-* Terminal: https://atom.io/packages/atom-xterm
 * Web browser: https://github.com/rhysd/react-embedded-browser
+* Terminal: https://atom.io/packages/atom-xterm
 * File manager: https://github.com/OpusCapita/filemanager
 * Media player: https://cookpete.com/react-player/
 
