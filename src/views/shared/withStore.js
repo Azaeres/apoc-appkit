@@ -8,7 +8,7 @@ export default function withStore(
   return compose(
     withState(valueName, 'setValue', selector(store.value)),
     withHandlers({
-      listener: props => value => {
+      listener: props => (value, previousValue) => {
         props.setValue(selector(value));
       }
     }),

@@ -41,7 +41,6 @@ function One({
   onClick,
   advance,
   objectStore: { toggleValue, counterValue },
-  secondInstanceOfCounter,
   toggle,
   incrementCounter
 }) {
@@ -61,7 +60,6 @@ function One({
         {counterValue}
         {/* 1. view control -> view event */}
         <button onClick={incrementCounter}>Bump</button>
-        {secondInstanceOfCounter}
       </div>
     </div>
   );
@@ -81,11 +79,6 @@ export default compose(
       };
     },
     'objectStore'
-  ),
-  withStore(
-    objectStore,
-    value => counterSelector(value),
-    'secondInstanceOfCounter'
   ),
   withHandlers({
     onClick: props => event => {

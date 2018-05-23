@@ -4,67 +4,40 @@ import guid from 'util/guid';
 const storeInstances = {};
 const bestGuessCache = {};
 
-const defaultInitialize = async (storeId, initialValue) => {
-  storeInstances[storeId].value = initialValue;
-  // console.log(
-  //   '> defaultInitialize: storeInstances[storeId]',
-  //   storeInstances[storeId],
-  //   storeId
-  // );
-  return Promise.resolve(initialValue);
-};
-const defaultGetter = async storeId => {
-  const { value } = storeInstances[storeId];
-  // console.log('> defaultGetter : ', storeId);
-  // console.log('> : storeInstances[storeId]', storeInstances[storeId]);
-  // console.log('> : value', value);
-  return Promise.resolve(value);
-};
-const defaultSetter = (storeId, value) => {
-  storeInstances[storeId].value = value;
-  return Promise.resolve();
-};
-
-export default function Store(stateMachine, accessors = Driver(), storeId) {
-  const { initialValue, reducer, dispatchers } = stateMachine;
-  const { initialize } = accessors;
-  storeId = storeId === undefined ? guid() : storeId;
-  // console.log('> Store() : storeId', storeId);
-  // console.log('> Store : initialValue, storeId', initialValue, storeId);
+export default function Store(
+  { initialValue, reducer, dispatchers },
+  persistenceDriver = InMemoryPersistenceDriver(),
+  storeId = guid()
+) {
+  const { initialize } = persistenceDriver;
+  // We prefer the cache until the initialize comes back.
   bestGuessCache[storeId] = { value: initialValue, prefer: 1 };
   storeInstances[storeId] = { reducer, subscribers: [] };
-  initialize(storeId, initialValue).then(async init => {
-    // console.log('### intialize Store: storeId', storeId);
-    // console.log('> Store: init', init, storeId);
-    const value = init === undefined ? initialValue : init;
-    // console.log('> : value', value, storeId);
-    // const currentValue = await getter(storeId);
-    // console.log('> : currentValue', currentValue, storeId);
+  initialize(storeId, initialValue).then(async (value = initialValue) => {
     Object.assign(bestGuessCache[storeId], { value });
-    // console.log('> setting... : value, storeId', value, storeId);
-    return await swap(storeId, value, accessors);
-
-    // const result = await setter(storeId, value);
-    // console.log(
-    //   '> : bestGuessCache[storeId]',
-    //   bestGuessCache[storeId],
-    //   storeId
-    // );
-    // bestGuessCache[storeId].prefer--;
-    // notifySubscribers
-    // return result;
+    return await swap(storeId, value, persistenceDriver);
   });
-  return Interface(storeId, dispatchers, accessors);
-  // const v1 = result.value;
-  // console.log('> : v1', v1, storeId);
-  // return result;
+  return Interface(storeId, dispatchers, persistenceDriver);
 }
 
-export function Driver(
-  initialize = defaultInitialize,
-  getter = defaultGetter,
-  setter = defaultSetter
-) {
+export function InMemoryPersistenceDriver() {
+  return Driver(
+    async (storeId, initialValue) => {
+      storeInstances[storeId].value = initialValue;
+      return Promise.resolve(initialValue);
+    },
+    async storeId => {
+      const { value } = storeInstances[storeId];
+      return Promise.resolve(value);
+    },
+    (storeId, value) => {
+      storeInstances[storeId].value = value;
+      return Promise.resolve();
+    }
+  );
+}
+
+export function Driver(initialize, getter, setter) {
   return {
     initialize,
     getter,
@@ -76,34 +49,17 @@ export function StateMachine(initialValue, reducer, dispatchers) {
   return { initialValue, reducer, dispatchers };
 }
 
-function Interface(storeId, dispatchers, accessors) {
-  // console.log(
-  //   '> Interface : storeId, dispatchers, accessors',
-  //   storeId,
-  //   dispatchers,
-  //   accessors
-  // );
-  const { getter } = accessors;
+function Interface(storeId, dispatchers, persistenceDriver) {
+  const { getter } = persistenceDriver;
   const dispatch = async action => {
-    // console.log('##### dispatch : action', action, storeId);
-    // console.log(
-    //   '> : storeInstances[storeId]',
-    //   storeInstances[storeId],
-    //   storeId
-    // );
     const { reducer } = storeInstances[storeId];
-
     // Local async, should be relatively quick
     const currentActualValue = await getter(storeId);
-    // console.log('> : currentActualValue', currentActualValue, storeId);
-    // console.log('> : bestGuessCache[storeId]', bestGuessCache[storeId]);
     const previousValue = bestGuessCache[storeId].prefer
       ? bestGuessCache[storeId].value
       : currentActualValue;
-    // console.log('> local async get : previousValue', previousValue);
     // Syncronous, optimistic update
     const prediction = reducer(previousValue, action);
-    // console.log('> Syncronous, optimistic update : prediction', prediction);
     cacheSwap(storeId, prediction);
     // Simulate delay with sending action, like over a network
     // console.log('#### Simulating network delay...');
@@ -111,7 +67,7 @@ function Interface(storeId, dispatchers, accessors) {
     // This is the actual determination of the next value.
     const nextValue = reducer(previousValue, action);
     // Local async, should be relatively quick
-    await swap(storeId, nextValue, accessors);
+    await swap(storeId, nextValue, persistenceDriver);
     return { nextValue, previousValue };
   };
   const _interface = {
@@ -119,18 +75,14 @@ function Interface(storeId, dispatchers, accessors) {
     dispatch,
     // Syncronous and fast, but might differ from the actual value.
     get value() {
-      // console.log('> get value : bestGuessCache', bestGuessCache);
       return bestGuessCache[storeId].value;
     },
     // Gets you the actual value, but is asyncronous.
     async getValue() {
-      // console.log('> getValue() : storeId', storeId);
-      const cache = bestGuessCache[storeId];
-      // console.log('> : cache', cache);
-      if (cache.prefer > 0) {
-        return Promise.resolve(this.value);
-      } else {
+      if (bestGuessCache[storeId].prefer === 0) {
         return getter(storeId);
+      } else {
+        return Promise.resolve(this.value);
       }
     },
     // Attaches a listener function that will be called to receive updates on state changes.
@@ -158,59 +110,38 @@ function Interface(storeId, dispatchers, accessors) {
 }
 
 function cacheSwap(storeId, nextValue) {
-  // console.log('> cacheSwap: storeId, nextValue', storeId, nextValue);
   const previousValue = bestGuessCache[storeId].value;
   bestGuessCache[storeId].value = nextValue;
   bestGuessCache[storeId].prefer++;
-  // console.log(
-  //   '> : bestGuessCache[storeId].prefer',
-  //   bestGuessCache[storeId].prefer
-  // );
-  const valuesAreDifferent = nextValue !== previousValue;
-  if (valuesAreDifferent) {
+  if (nextValue !== previousValue) {
     notifySubscribers(storeId, previousValue, nextValue);
   }
 }
 
-async function swap(storeId, nextValue, accessors) {
-  const { getter, setter } = accessors;
+async function swap(storeId, nextValue, { getter, setter }) {
   // Swapping means we got an update from the central source,
   // and we prefer that instead of the cache.
   // However, if we have outgoing action dispatches going on, we'd still prefer the cache.
   bestGuessCache[storeId].prefer--;
-  // console.log(
-  //   '> : bestGuessCache[storeId].prefer',
-  //   bestGuessCache[storeId].prefer
-  // );
   const previousValue = bestGuessCache[storeId].prefer
     ? bestGuessCache[storeId].value
     : await getter(storeId);
-  // If there's no change, there's no need to swap.
+  // If we're prefering the cache, we're still awaiting a final update.
+  // In other words, use the cache until ALL updates are in (the cache preference is 0)
   nextValue = bestGuessCache[storeId].prefer
     ? bestGuessCache[storeId].value
     : nextValue;
-  const valuesAreDifferent = nextValue !== previousValue;
-  // console.log('> swap');
-  // console.log('> : bestGuessCache[storeId]', bestGuessCache[storeId]);
-  // console.log('> : nextValue', nextValue);
-  // console.log('> : previousValue', previousValue);
-  // console.log('> swap: valuesAreDifferent', valuesAreDifferent);
-  if (valuesAreDifferent) {
+  // If there's no change, there's no need to swap.
+  if (nextValue !== previousValue) {
     await setter(storeId, nextValue);
     // We've notified subscribers when we made the quick prediction,
     // but the actual determination can take a little while.
     // Only if it comes back different than what we predicted, do we need to notify them again.
-    const cacheDifference = nextValue !== previousValue;
-    // console.log('> : cacheDifference', cacheDifference);
-    if (cacheDifference) {
-      notifySubscribers(storeId, previousValue, nextValue);
-    }
+    notifySubscribers(storeId, previousValue, nextValue);
   }
 }
 
 function notifySubscribers(storeId, previousValue, currentValue) {
-  // console.log('> notifySubscribers: currentValue', currentValue, storeId);
-  // console.log('> : previousValue', previousValue);
   const { subscribers } = storeInstances[storeId];
   subscribers.forEach((subscriber, i) => {
     subscriber(currentValue, previousValue);
