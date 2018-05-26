@@ -13,6 +13,7 @@ const routes = [
   Route('/load/foo', PageAction(Load)),
   Route('/load/:q?', PageAction(Load)),
   Route('/prefetch', PageAction(Prefetch)),
+  Route('/iframe', PageAction(Iframe)),
   Route('(.*)', PageAction(NotFound404))
 ];
 
