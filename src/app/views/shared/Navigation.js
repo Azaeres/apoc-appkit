@@ -33,10 +33,16 @@ function FullscreenButton({
   isFullscreen,
   disableFullscreen
 }) {
-  if (isFullscreen) {
-    return <button onClick={disableFullscreen}>Disable Fullscreen Mode</button>;
+  if (screenfull) {
+    if (isFullscreen) {
+      return (
+        <button onClick={disableFullscreen}>Disable Fullscreen Mode</button>
+      );
+    } else {
+      return <button onClick={enableFullscreen}>Enable Fullscreen Mode</button>;
+    }
   } else {
-    return <button onClick={enableFullscreen}>Enable Fullscreen Mode</button>;
+    return null;
   }
 }
 
@@ -66,18 +72,22 @@ export default compose(
   }),
   lifecycle({
     componentDidMount() {
-      const { setFullscreen } = this.props;
-      setFullscreen(screenfull.isFullscreen);
-      screenfull.onchange(event => {
+      if (screenfull) {
+        const { setFullscreen } = this.props;
         setFullscreen(screenfull.isFullscreen);
-      });
+        screenfull.onchange(event => {
+          setFullscreen(screenfull.isFullscreen);
+        });
+      }
     },
     componentWillUnmount() {
-      const { setFullscreen } = this.props;
-      setFullscreen(screenfull.isFullscreen);
-      screenfull.off('change', event => {
+      if (screenfull) {
+        const { setFullscreen } = this.props;
         setFullscreen(screenfull.isFullscreen);
-      });
+        screenfull.off('change', event => {
+          setFullscreen(screenfull.isFullscreen);
+        });
+      }
     }
   }),
   pure
