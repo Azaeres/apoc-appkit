@@ -72,6 +72,14 @@ function registerValidSW(swUrl) {
               // "Content is cached for offline use." message.
               console.log('Content is cached for offline use.');
             }
+          } else if (installingWorker.state === 'waiting') {
+            console.log(
+              "This is an update to a previous service worker, and it's now waiting."
+            );
+          } else if (installingWorker.state === 'redundant') {
+            console.log(
+              "Something went wrong and the service worker couldn't install."
+            );
           }
         };
       };

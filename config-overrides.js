@@ -19,7 +19,6 @@ function srcFolderForModules(config) {
   setAutoFreeze(false);
   const newConfig = produce(config, draft => {
     draft.resolve.modules.unshift(path.join(__dirname, 'src'));
-    // draft.resolve.modules.unshift(path.join(__dirname, 'src/app'));
   });
   return newConfig;
 }
