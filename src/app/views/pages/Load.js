@@ -1,16 +1,16 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
 import { compose, pure } from 'recompose';
-import Header from 'views/shared/Header';
-import Loading from 'views/shared/Loading';
+import Header from 'app/views/shared/Header';
+import Loading from 'app/views/shared/Loading';
 import Loadable from 'react-loadable';
 import delay from 'util/delay';
-import Navigation from 'views/shared/Navigation';
+import Navigation from 'app/views/shared/Navigation';
 
 const LoadableComponent = Loadable({
   loader: async () => {
     await delay(2000);
-    return import('views/shared/LoadPageContent');
+    return import('app/views/shared/LoadPageContent');
   },
   loading: Loading
 });

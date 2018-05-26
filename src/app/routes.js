@@ -1,9 +1,10 @@
-import One from 'views/pages/One';
-import Two from 'views/pages/Two';
-import NotFound404 from 'views/pages/404';
+import One from 'app/views/pages/One';
+import Two from 'app/views/pages/Two';
+import NotFound404 from 'app/views/pages/404';
 import Route, { PageAction } from 'models/Route';
-import Load from 'views/pages/Load';
-import Prefetch from 'views/pages/Prefetch';
+import Load from 'app/views/pages/Load';
+import Prefetch from 'app/views/pages/Prefetch';
+import Iframe from 'app/views/pages/Iframe';
 
 // Path matching rules: https://github.com/pillarjs/path-to-regexp
 const routes = [

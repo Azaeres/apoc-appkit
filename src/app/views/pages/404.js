@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from 'assets/logo.svg';
-import Navigation from 'views/shared/Navigation';
+import Navigation from 'app/views/shared/Navigation';
 
 export default function NotFound404({ context }) {
   return (
