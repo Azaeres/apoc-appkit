@@ -5,7 +5,7 @@ const path = require('path');
 const webpackConfigProd = require('react-scripts/config/webpack.config.prod');
 
 webpackConfigProd.resolve.modules.unshift(path.join(__dirname, 'src'));
-webpackConfigProd.resolve.modules.unshift(path.join(__dirname, 'src/app'));
+// webpackConfigProd.resolve.modules.unshift(path.join(__dirname, 'src/app'));
 webpackConfigProd.plugins.push(
   new BundleAnalyzerPlugin({
     analyzerMode: 'static',

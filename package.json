@@ -32,7 +32,11 @@
     "webpack-bundle-analyzer": "^2.13.0"
   },
   "jest": {
-    "modulePaths": ["./src/app", "./src"]
+    "modulePaths": [
+      "./src"
+    ]
   },
-  "moduleRoots": ["src/app", "src"]
+  "moduleRoots": [
+    "src"
+  ]
 }

@@ -12,7 +12,7 @@ import App from 'app/views/pages/App';
 // TODO: This file location is the responsibility of the app
 // Create an `app/app.json` to keep a map of locations for:
 // App.js, routes.js, stores.js, etc.
-import routes from 'routes';
+import routes from 'app/routes';
 
 const router = new UniversalRouter(routes);
 

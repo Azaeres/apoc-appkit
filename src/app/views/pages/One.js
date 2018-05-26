@@ -9,10 +9,10 @@ import {
 } from 'app/models/ObjectExample';
 import Store from 'models/Store';
 import { hot } from 'react-hot-loader';
-import Header from 'views/shared/Header';
+import Header from 'app/views/shared/Header';
 // import localStorageDriver from 'models/localStorageDriver';
 import localforageDriver from 'models/localforageDriver';
-import Navigation from 'views/shared/Navigation';
+import Navigation from 'app/views/shared/Navigation';
 
 const { stateMachine, exampleSelector } = testModel;
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
 import { compose, pure, setStatic } from 'recompose';
-import Header from 'views/shared/Header';
+import Header from 'app/views/shared/Header';
 import delay from 'util/delay';
 import idx from 'idx';
 import Loader from 'views/shared/Loader';
-import Navigation from 'views/shared/Navigation';
+import Navigation from 'app/views/shared/Navigation';
 
 function Prefetch({ context, prefetch }) {
   return (

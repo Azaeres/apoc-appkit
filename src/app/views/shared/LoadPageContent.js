@@ -1,5 +1,5 @@
 import React from 'react';
-import { testStore } from 'views/pages/One';
+import { testStore } from 'app/views/pages/One';
 import withStore from 'views/shared/withStore';
 import { hot } from 'react-hot-loader';
 import { compose, pure } from 'recompose';
