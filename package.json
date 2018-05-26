@@ -21,8 +21,11 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject",
-    "analyzer": "node bundle-analyzer.js",
-    "serve": "./node_modules/http-server/bin/http-server -a localhost build"
+    "analyze": "node bundle-analyzer.js",
+    "serve": "./node_modules/http-server/bin/http-server -a localhost build",
+    "install": "npm install netlify-cli -g",
+    "deploy": "netlify deploy -s diddit-app-kit -p build",
+    "build-and-deploy": "npm run build && npm run deploy"
   },
   "devDependencies": {
     "babel-plugin-idx": "^2.2.0",
@@ -33,11 +36,7 @@
     "webpack-bundle-analyzer": "^2.13.0"
   },
   "jest": {
-    "modulePaths": [
-      "./src"
-    ]
+    "modulePaths": ["./src"]
   },
-  "moduleRoots": [
-    "src"
-  ]
+  "moduleRoots": ["src"]
 }
