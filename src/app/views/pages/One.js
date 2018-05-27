@@ -11,7 +11,7 @@ import Store from 'models/Store';
 import { hot } from 'react-hot-loader';
 import Header from 'app/views/shared/Header';
 // import localStorageDriver from 'models/localStorageDriver';
-import localforageDriver from 'models/localforageDriver';
+import localForageDriver from 'models/localForageDriver';
 import Navigation from 'app/views/shared/Navigation';
 
 const { stateMachine, exampleSelector } = testModel;
@@ -19,7 +19,7 @@ const { stateMachine, exampleSelector } = testModel;
 export const testStore = Store(stateMachine, undefined, 'testStore');
 export const objectStore = Store(
   objectStateMachine,
-  localforageDriver,
+  localForageDriver,
   'objectStore'
 );
 

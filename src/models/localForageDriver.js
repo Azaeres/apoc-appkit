@@ -1,8 +1,8 @@
 import localforage from 'localforage';
 import { Driver } from 'models/Store';
 
-const localforageDriver = Driver(initialize, getter, setter);
-export default localforageDriver;
+const localForageDriver = Driver(initialize, getter, setter);
+export default localForageDriver;
 
 // window.clear = () => localforage.clear();
 
