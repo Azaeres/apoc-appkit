@@ -15,8 +15,9 @@ function Two({ value, context }) {
         <iframe
           title="Weather"
           src="https://weather-pwa-sample.firebaseapp.com/final/index.html"
-          width={540}
+          width="100%"
           height={450}
+          style={{ maxWidth: 540 }}
         />
       </div>
     </div>
