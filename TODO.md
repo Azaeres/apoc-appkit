@@ -36,18 +36,20 @@ We have a few options to consider:
 * setup dedicated host for prod, test offline mode
 * test: does this work within an iframe?
 * fullscreen mode
+* ran lighthouse analysis
 
 ---
 
 **Up next**
 
+* create example app
+  test custom app project within app-kit clone; git submodules? work out copy/solve/share workflow
 * Web browser: https://github.com/rhysd/react-embedded-browser
 
-* create new home app; test custom app project within app-kit clone; git submodules? work out copy/solve/share workflow
-* home within electron (for desktop)
+* app within electron (for desktop)
   https://medium.freecodecamp.org/building-an-electron-application-with-create-react-app-97945861647c
   https://gist.github.com/matthewjberger/6f42452cb1a2253667942d333ff53404
-* home within iOS/Android web app container (for mobile)
+* app within iOS/Android web app container (for mobile)
 
 - proxy store, update store to support protocols
 - localStoreProtocol and httpStoreProtocol
@@ -67,3 +69,11 @@ We have a few options to consider:
 - "why is this project cool? what problems does it solve?"" docs
 - "getting started" documentation
 - "recommended patterns" documentation
+
+- lighthouse analysis:
+  * reduce render-blocking stylesheets (\*.css takes 570 ms)
+  * manifest does not have icons at least 192px
+  * User will not be prompted to install the Web App: service worker does not successfully serve the manifest's start_url, no start URL to fetch: no usable web app manifest found on page https://diddit-app-kit.diddit.io/
+  * Not configured for custom splash screen: manifest does not have icons at least 512px
+  * Netlify does not redirect HTTP traffic to HTTPS
+  * Document does not have a meta description
