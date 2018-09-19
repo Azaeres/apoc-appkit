@@ -14,7 +14,11 @@ import App from 'app/views/pages/App';
 // App.js, routes.js, stores.js, etc.
 import routes from 'app/routes';
 
-const router = new UniversalRouter(routes);
+const { REACT_APP_PUBLIC_URL } = process.env;
+
+const router = new UniversalRouter(routes, {
+  baseUrl: `${REACT_APP_PUBLIC_URL}/#`
+});
 
 registerServiceWorker();
 window.addEventListener('hashchange', handleNewHash, false);
@@ -22,6 +26,8 @@ handleNewHash();
 
 async function handleNewHash() {
   const newHash = window.location.hash.substr(1);
-  const Page = await router.resolve({ pathname: newHash });
+  const Page = await router.resolve({
+    pathname: `${REACT_APP_PUBLIC_URL}/#${newHash}`
+  });
   ReactDOM.render(<App>{Page}</App>, document.getElementById('root'));
 }

@@ -9,10 +9,11 @@ import memoize from 'lodash.memoize';
 
 // Route options: https://github.com/kriasoft/universal-router/blob/master/docs/api.md
 
-export default function Route(path, action) {
+export default function Route(path, action, name) {
   return {
     path,
-    action
+    action,
+    name
   };
 }
 
@@ -33,11 +34,9 @@ export function PageAction(Page) {
       const promiseStore = PromiseStore(Page, `prefetch:"${context.path}"`);
       // console.log('>############# adding promise : ', promiseStore.value);
       promiseStore.addPromise(prefetch(props));
-      const Component = withStore(promiseStore, undefined, 'prefetch')(
-        props => {
-          return <Page {...props} />;
-        }
-      );
+      const Component = withStore(promiseStore, undefined, 'prefetch')(props => {
+        return <Page {...props} />;
+      });
       return <Component {...props} />;
     }
   };
@@ -45,11 +44,7 @@ export function PageAction(Page) {
 
 export function LoadablePageAction(loader, loading) {
   return (context, params) => (
-    <LoadablePage
-      {...PagePropsFromActionArgs(context, params)}
-      loader={loader}
-      loading={loading}
-    />
+    <LoadablePage {...PagePropsFromActionArgs(context, params)} loader={loader} loading={loading} />
   );
 }
 
