@@ -6,7 +6,7 @@ Runbook
 
 ```
 ipfs id -> PEER_ID
-PUBLIC_URL=/ipns/%PEER_ID% npm run build
+PUBLIC_URL=/ipns/%PEER_ID% REACT_APP_PUBLIC_URL=$PUBLIC_URL npm run build
 ipfs add -r build -> DIR_HASH
 ipfs name publish %DIR_HASH%
 ```
