@@ -1,0 +1,19 @@
+http://*.apoc.app, https://*.apoc.app {
+  gzip
+  log stdout
+  errors stdout
+
+  proxy / :8080 {
+    transparent
+    websocket
+  }
+
+  proxy /api localhost:5001 {
+    transparent
+    websocket
+  }
+
+  tls /etc/caddycerts/apoc.app.crt /etc/caddycerts/apoc.app.key {
+    alpn http/1.1
+  }
+}
