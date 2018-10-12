@@ -47,9 +47,7 @@ export function PromiseStateMachine(defaultValue) {
         const { fulfillSuccess, fulfillError } = PrivateMethods(dispatch);
         // console.log('> addPromise() ');
         promise.catch(error => {});
-        return dispatch(
-          Action(ACTION_TYPES.ADD_PROMISE, { defaultValue })
-        ).then(value => {
+        return dispatch(Action(ACTION_TYPES.ADD_PROMISE, { defaultValue })).then(value => {
           return promise.then(fulfillSuccess, fulfillError).catch(fulfillError);
         });
       }
@@ -115,6 +113,16 @@ export const resultFromPromiseState = memoize(
 
 // -----------------------------------------------------------------------------
 // Predicates
+
+/*
+  @function isEmpty
+  @param {PromiseState} promiseState
+  @return {boolean}             Returns true if the promise state is empty; false if fulfilled.
+ */
+export const isEmpty = memoize(
+  promiseState => statusFromPromiseState(promiseState) === STATUSES.EMPTY,
+  multiArgResolver
+);
 
 /*
   @function isPending

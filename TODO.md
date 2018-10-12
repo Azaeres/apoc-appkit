@@ -1,29 +1,5 @@
 ## App Kit
 
-Runbook
-
-1.  Build & deploy
-
-```
-ipfs id -> PEER_ID
-PUBLIC_URL=/ipns/%PEER_ID% REACT_APP_PUBLIC_URL=$PUBLIC_URL npm run build
-ipfs add -r build -> DIR_HASH
-ipfs name publish %DIR_HASH%
-```
-
-2.
-
-Visit http://localhost:8080/ipns/%PEER_ID%
-Visit https://gateway.ipfs.io/ipns/%PEER_ID%
-
----
-
-Starting for development
-
-```
-PUBLIC_URL=/ipns/%PEER_ID% REACT_APP_PUBLIC_URL=$PUBLIC_URL npm start
-PUBLIC_URL=/ipns/QmUQ4pouftzQM6gYXJ6wRbDzxGst2xfTgdZCfWCfjJ8xHB REACT_APP_PUBLIC_URL=$PUBLIC_URL npm start
-```
 
 We have a few options to consider:
 

@@ -1,0 +1,45 @@
+Get started
+===========
+
+IPFS ===========================
+
+-------------------------
+1. Setup.
+  * Install IPFS
+    https://docs.ipfs.io/introduction/install/
+```
+# One-time, set IPFS CORS whitelist
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"http://localhost:3000\",\"http://localhost:8080\",\"https://gateway.ipfs.io\"]"
+```
+
+-------------------------------
+2. Start development server.
+```
+# Make sure the IPFS daemon is running.
+ipfs daemon
+```
+
+```
+npm start
+```
+
+Notes:
+
+Offline mode isn't supported in the development environment.
+
+None of the npm scripts require the IPFS daemon to be running in development -- not even for deployment.
+
+The IPFS daemon IS required in production, because the node serves the static web files.
+
+--------------------------------------
+3. Production server.
+```
+npm run build
+npm run deploy
+```
+
+* Local production, using your own node directly:
+Visit http://localhost:8080/ipns/%PEER_ID%
+
+* Remote production, using the public gateway:
+Visit https://gateway.ipfs.io/ipns/%PEER_ID%

@@ -2,7 +2,7 @@ import React from 'react';
 import qs from 'qs';
 import Loadable from 'react-loadable';
 import delay from 'util/delay';
-import { PromiseStateMachine } from 'models/Promise';
+import { PromiseStateMachine, resultFromPromiseState } from 'models/Promise';
 import Store from 'models/Store';
 import withStore from 'views/shared/withStore';
 import memoize from 'lodash.memoize';
@@ -17,7 +17,7 @@ export default function Route(path, action, name) {
   };
 }
 
-const PromiseStore = memoize((Page, storeId) => {
+const PromiseStore = memoize(storeId => {
   // console.log('> PromiseStore : storeId', storeId);
   return Store(PromiseStateMachine(), undefined, storeId);
 });
@@ -31,13 +31,17 @@ export function PageAction(Page) {
     } else {
       // console.log('> PageAction: context', context);
       // console.log('> params: ');
-      const promiseStore = PromiseStore(Page, `prefetch:"${context.path}"`);
+      const promiseStore = PromiseStore(`prefetch:"${context.path}"`);
       // console.log('>############# adding promise : ', promiseStore.value);
-      promiseStore.addPromise(prefetch(props));
-      const Component = withStore(promiseStore, undefined, 'prefetch')(props => {
+      setTimeout(() => {
+        promiseStore.addPromise(prefetch(props));
+      }, 0);
+      const previousPrefetchedData = resultFromPromiseState(promiseStore.value);
+      // console.log('> : previousPrefetchedData', previousPrefetchedData);
+      const PromiseWrappedPage = withStore(promiseStore, undefined, 'prefetchedData')(props => {
         return <Page {...props} />;
       });
-      return <Component {...props} />;
+      return <PromiseWrappedPage previousPrefetchedData={previousPrefetchedData} {...props} />;
     }
   };
 }

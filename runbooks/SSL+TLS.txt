@@ -1,0 +1,108 @@
+
+#######################
+# Make sure you have the following:
+# `install`
+1. ipfs
+2. docker
+3. openssl
+
+
+
+########################
+# Set CORS headers for apoc.app domain
+# `postinstall`
+
+# The following are set once:
+
+# Wildcard CORS header, to avoid having to restart the IPFS node when
+# an app is added/removed.
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin "[\"*\"]"
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials "[\"true\"]"
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"POST\", \"GET\"]"
+
+1. Restart the ipfs daemon for the CORS changes to take affect.
+
+
+
+
+####################
+# `postinstall`
+# Make sure 127.0.0.1 comes to the top of our /etc/resolv.conf
+# This is done once the local DNS is up the first time.
+# Arch Linux:
+1. Right click network connection panel item
+2. Click "Edit Connections..."
+3. For each network connection, click the "IPv4 Settings" tab.
+  a. Select "Automatic (DHCP) addresses only" from the Method dropdown.
+  b. Add "127.0.0.1, 192.168.1.1" to the "DNS Servers" field.
+4. If you made changes to your current network, reconnect to it.
+
+
+#######################
+# Generate certificate
+# `postinstall`
+https://deliciousbrains.com/ssl-certificate-authority-for-local-https-development/
+openssl genrsa -des3 -out myCA.key 2048
+password: asdf
+openssl genrsa -out apoc.app.key 2048
+openssl req -new -key apoc.app.key -out apoc.app.csr
+openssl x509 -req -in apoc.app.csr -CA myCA.pem -CAkey myCA.key -CAcreateserial -out apoc.app.crt -days 1825 -sha256 -extfile apoc.app.ext
+
+https://security.stackexchange.com/questions/163199/firefox-certificate-can-t-be-installed#163200
+openssl pkcs12 -export -in apoc.app.crt -inkey apoc.app.key -out apoc.app.p12
+
+
+##################
+# `prestart`
+# Main command to restart DNS
+# Add a TXT record for every <app_id>/<file_hash> pair.
+docker stop dnsmasq && docker rm dnsmasq && docker run --name dnsmasq -d -p 53:53/tcp -p 53:53/udp --cap-add=NET_ADMIN andyshinn/dnsmasq:2.78 --domain=/apoc.app/ --address=/apoc.app/127.0.0.1 --address=/apoc.app/::1 --log-facility=- --log-queries --txt-record='_dnslink.asdf.apoc.app,dnslink=/ipfs/QmXGnnT6VwRQJLRK98qDYxz2yxqhayXeCBinXuenZdhAZQ'
+
+
+
+##########################
+# Set up proxy server
+# `prestart`
+docker stop caddy && docker rm caddy && docker run --name caddy -d --network host -e "CADDYPATH=/etc/caddycerts" -v $HOME/.caddy:/etc/caddycerts -v $HOME/.caddy/Caddyfile:/etc/Caddyfile abiosoft/caddy:no-stats
+
+
+
+########################################
+# Test container (optional)
+# `prestart`
+docker stop control && docker rm control && docker run --name control --network host -d -ti ubuntu:18.04
+docker exec -ti control bash
+apt-get update && apt-get upgrade && apt-get dist-upgrade
+apt-get install curl
+
+
+
+
+#########################################
+# Snippets
+
+
+# Site multihash:
+QmQwYCysiMu5boNUbuzyra6MaM8bhEJpQ9aQAPtrwSHti3
+
+# Peer id:
+QmUQ4pouftzQM6gYXJ6wRbDzxGst2xfTgdZCfWCfjJ8xHB
+
+
+
+# Old scripts
+"scripts": {
+  "start": "export PUBLIC_URL=/ipns/$(ipfs id | jq '.ID' | sed 's/\"//g') && REACT_APP_PUBLIC_URL=$PUBLIC_URL react-app-rewired start",
+  "build": "export PUBLIC_URL=/ipns/$(ipfs id | jq '.ID' | sed 's/\"//g') && REACT_APP_PUBLIC_URL=$PUBLIC_URL react-app-rewired build",
+  "test": "react-app-rewired test --env=jsdom",
+  "eject": "react-app-rewired eject",
+  "analyze": "node bundle-analyzer.js",
+  "deploy": "FILE_HASH=$(ipfs add -r build -Q) && echo 'Deploying...' && ipfs name publish $FILE_HASH"
+},
+
+
+
+
+curl 'https://asdf.apoc.app/api/v0/id?stream-channels=true' -X POST -H 'pragma: no-cache' -H 'origin: https://asdf.apoc.app' -H 'accept-encoding: gzip, deflate, br' -H 'accept-language: en-US,en;q=0.9' -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36' -H 'accept: */*' -H 'cache-control: no-cache' -H 'authority: asdf.apoc.app' -H 'referer: https://asdf.apoc.app/' -H 'content-length: 0' --compressed -k -v
+
+curl 'http://localhost:5001/api/v0/id?stream-channels=true' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:62.0) Gecko/20100101 Firefox/62.0' -H 'Accept: */*' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Referer: http://localhost:3000/' -H 'Origin: http://localhost:3000' -H 'DNT: 1' -H 'Connection: keep-alive' --data ''

@@ -2,18 +2,19 @@
   "name": "apoc-appkit",
   "version": "0.1.0",
   "dependencies": {
-    "idx": "2.3.0",
-    "immer": "1.3.0",
-    "localforage": "1.7.1",
+    "idx": "2.4.0",
+    "immer": "1.7.2",
+    "localforage": "1.7.2",
     "lodash.memoize": "4.1.2",
+    "native-dns": "^0.7.0",
     "object-hash": "1.3.0",
     "qs": "6.5.2",
-    "react": "16.3.2",
-    "react-dom": "16.3.2",
-    "react-loadable": "5.4.0",
-    "react-scripts": "1.1.4",
-    "recompose": "0.27.0",
-    "screenfull": "3.3.2",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "react-loadable": "5.5.0",
+    "react-scripts": "2.0.1",
+    "recompose": "0.30.0",
+    "screenfull": "3.3.3",
     "universal-router": "6.0.0"
   },
   "scripts": {
@@ -22,18 +23,14 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject",
     "analyze": "node bundle-analyzer.js",
-    "serve": "./node_modules/http-server/bin/http-server -a localhost build",
-    "install": "npm install netlify-cli -g",
-    "deploy": "netlify deploy -s diddit-app-kit -p build",
-    "build-and-deploy": "npm run build && npm run deploy"
+    "deploy": "FILE_HASH=$(ipfs add -r build -Q) && echo 'Deployed:' && echo $FILE_HASH"
   },
   "devDependencies": {
-    "babel-plugin-idx": "^2.4.0",
-    "http-server": "^0.11.1",
-    "react-app-rewire-hot-loader": "^1.0.1",
-    "react-app-rewired": "^1.6.2",
-    "react-hot-loader": "^4.3.8",
-    "webpack-bundle-analyzer": "^2.13.1"
+    "babel-plugin-idx": "2.4.0",
+    "react-app-rewire-hot-loader": "1.0.1",
+    "react-app-rewired": "2.0.0",
+    "react-hot-loader": "4.3.11",
+    "webpack-bundle-analyzer": "3.0.2"
   },
   "jest": {
     "modulePaths": [
@@ -42,5 +39,11 @@
   },
   "moduleRoots": [
     "src"
+  ],
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
   ]
 }
