@@ -47,7 +47,7 @@ openssl genrsa -des3 -out $HOME/.caddy/myCA.key 2048
 password: asdf
 openssl genrsa -out $HOME/.caddy/apoc.app.key 2048
 openssl req -new -key $HOME/.caddy/apoc.app.key -out $HOME/.caddy/apoc.app.csr
-openssl x509 -req -in $HOME/.caddy/apoc.app.csr -CA $HOME/.caddy/myCA.pem -CAkey $HOME/.caddy/myCA.key -CAcreateserial -out $HOME/.caddy/apoc.app.crt -days 1825 -sha256 -extfile apoc.app.ext
+openssl x509 -req -in $HOME/.caddy/apoc.app.csr -CA $HOME/.caddy/myCA.pem -CAkey $HOME/.caddy/myCA.key -CAcreateserial -out $HOME/.caddy/apoc.app.crt -days 1825 -sha256 -extfile $PWD/apoc.app.ext
 
 https://security.stackexchange.com/questions/163199/firefox-certificate-can-t-be-installed#163200
 openssl pkcs12 -export -in $HOME/.caddy/apoc.app.crt -inkey $HOME/.caddy/apoc.app.key -out $HOME/.caddy/apoc.app.p12
