@@ -44,6 +44,7 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"POS
 https://deliciousbrains.com/ssl-certificate-authority-for-local-https-development/
 mkdir $HOME/.caddy
 openssl genrsa -des3 -out $HOME/.caddy/myCA.key 2048
+openssl req -x509 -new -nodes -key $HOME/.caddy/myCA.key -sha256 -days 1825 -out $HOME/.caddy/myCA.pem
 password: asdf
 openssl genrsa -out $HOME/.caddy/apoc.app.key 2048
 openssl req -new -key $HOME/.caddy/apoc.app.key -out $HOME/.caddy/apoc.app.csr
@@ -57,14 +58,14 @@ openssl pkcs12 -export -in $HOME/.caddy/apoc.app.crt -inkey $HOME/.caddy/apoc.ap
 # `prestart`
 # Main command to restart DNS
 # Add a TXT record for every <app_id>/<file_hash> pair.
-docker stop dnsmasq && docker rm dnsmasq && docker run --name dnsmasq -d -p 53:53/tcp -p 53:53/udp --cap-add=NET_ADMIN andyshinn/dnsmasq:2.78 --domain=/apoc.app/ --address=/apoc.app/127.0.0.1 --address=/apoc.app/::1 --log-facility=- --log-queries --txt-record='_dnslink.asdf.apoc.app,dnslink=/ipfs/QmXGnnT6VwRQJLRK98qDYxz2yxqhayXeCBinXuenZdhAZQ'
+docker stop dnsmasq || docker rm dnsmasq || docker run --name dnsmasq -d -p 53:53/tcp -p 53:53/udp --cap-add=NET_ADMIN andyshinn/dnsmasq:2.78 --domain=/apoc.app/ --address=/apoc.app/127.0.0.1 --address=/apoc.app/::1 --log-facility=- --log-queries --txt-record='_dnslink.asdf.apoc.app,dnslink=/ipfs/QmXGnnT6VwRQJLRK98qDYxz2yxqhayXeCBinXuenZdhAZQ'
 
 
 
 ##########################
 # Set up proxy server
 # `prestart`
-docker stop caddy && docker rm caddy && docker run --name caddy -d --network host -e "CADDYPATH=/etc/caddycerts" -v $HOME/.caddy:/etc/caddycerts -v $PWD/Caddyfile:/etc/Caddyfile abiosoft/caddy:no-stats
+docker stop caddy || docker rm caddy || docker run --name caddy -d --network host -e "CADDYPATH=/etc/caddycerts" -v $HOME/.caddy:/etc/caddycerts -v $PWD/Caddyfile:/etc/Caddyfile abiosoft/caddy:no-stats
 
 
 
