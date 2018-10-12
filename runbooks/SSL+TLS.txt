@@ -64,7 +64,7 @@ docker stop dnsmasq && docker rm dnsmasq && docker run --name dnsmasq -d -p 53:5
 ##########################
 # Set up proxy server
 # `prestart`
-docker stop caddy && docker rm caddy && docker run --name caddy -d --network host -e "CADDYPATH=/etc/caddycerts" -v $HOME/.caddy:/etc/caddycerts -v $HOME/.caddy/Caddyfile:/etc/Caddyfile abiosoft/caddy:no-stats
+docker stop caddy && docker rm caddy && docker run --name caddy -d --network host -e "CADDYPATH=/etc/caddycerts" -v $HOME/.caddy:/etc/caddycerts -v $PWD/Caddyfile:/etc/Caddyfile abiosoft/caddy:no-stats
 
 
 
